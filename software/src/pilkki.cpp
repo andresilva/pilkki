@@ -621,7 +621,7 @@ struct AppArgs: public argparse::Args {
 
 
     void welcome() {
-        std::cout << "SWD Flasher\n\n"
+        std::cout << "Pilkki - SWD Flasher\n\n"
             << "All the following arguments require connection to the hardware part of the SWD flasher\n"
             << "The address and size can be specified in either decimal or hexadecimal format (prefixed with 0x).\n"
             << "Both values must be multiples of a word (4 bytes).\n"
@@ -634,7 +634,7 @@ int main(int argc, char ** argv) {
     AppArgs args{argparse::parse<AppArgs>(argc, argv)};
 
     if (args.version) {
-        std::cout<<"Flasher (ver. 0.0.1)"<<std::endl;
+        std::cout<<"Pilkki (ver. 0.0.1)"<<std::endl;
         return 0;
     }
     try {

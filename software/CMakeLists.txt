@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 
-project(flasher LANGUAGES C CXX)
+project(pilkki LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -18,9 +18,11 @@ else()
 endif()
 
 add_executable(
-    flasher
-    src/flasher.cpp
+    pilkki
+    src/pilkki.cpp
     ${SERIAL_IMPL}
 )
 
-target_link_libraries(flasher PRIVATE udev)
+target_link_libraries(pilkki PRIVATE udev)
+
+install(TARGETS pilkki DESTINATION bin)

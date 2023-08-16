@@ -1,6 +1,6 @@
 [submodule "deps/argparse"]
-	path = deps/argparse
+	path = software/deps/argparse
 	url = https://github.com/morrisfranken/argparse
 [submodule "deps/magic_enum"]
-	path = deps/magic_enum
+	path = software/deps/magic_enum
 	url = https://github.com/Neargye/magic_enum
