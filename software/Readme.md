@@ -9,7 +9,7 @@ You will need Linux (tested on ArchLinux), CMake, libudev, ninja and c++ compile
 
 Clone this repository with submodules:
 ```sh
-git clone --recurse-submodules https://github.com/Alzymologist/Pilkki
+git clone --recurse-submodules https://github.com/Kalapaja/Pilkki
 ```
 
 Build code:
