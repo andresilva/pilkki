@@ -338,7 +338,10 @@ public:
         if (crcReceived != p.crc) {
             throw std::runtime_error("CRC mismatch");
         }
+
         std::cout << "Flash written and verified. Have fun!" << std::endl;
+        reset();
+
 
 
     }
