@@ -60,6 +60,12 @@ cmake .. -G Ninja
 ninja
 ```
 
+#### Using nix
+
+```sh
+nix build
+```
+
 ### Installation
 
 Install the utility:
