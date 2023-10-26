@@ -4,3 +4,9 @@
 [submodule "deps/magic_enum"]
 	path = software/deps/magic_enum
 	url = https://github.com/Neargye/magic_enum
+[submodule "firmware/3dparty/embedded-cmake-snippets"]
+	path = firmware/3dparty/embedded-cmake-snippets
+	url = https://github.com/SmallSharky/embedded-cmake-snippets.git
+[submodule "firmware/3dparty/gecko_sdk"]
+	path = firmware/3dparty/gecko_sdk
+	url = https://github.com/SmallSharky/gecko_sdk.git
