@@ -3,7 +3,6 @@
 #include <stdint.h>
 
 extern const char _binary_target_efm32pg23_bin_start[];
-extern const char _binary_target_efm32pg23_bin_end[];
 extern const uint32_t _binary_target_efm32pg23_bin_size;
 
 

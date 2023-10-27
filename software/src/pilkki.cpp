@@ -342,8 +342,6 @@ public:
         std::cout << "Flash written and verified. Have fun!" << std::endl;
         reset();
 
-
-
     }
 };
 
