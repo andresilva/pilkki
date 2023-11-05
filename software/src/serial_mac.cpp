@@ -2,12 +2,10 @@
 #include "serial.hpp"
 
 #include <cstring>
-// #include <cstdlib>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <termios.h>
-#include <libudev.h>
 
 #include <iostream>
 #include <string_view>
@@ -33,7 +31,7 @@ struct Serial::Impl_ {
         if (fd>0) {
             ::close(fd);
         }
-        fd = 0;
+
     }
 };
 
@@ -78,7 +76,6 @@ Serial::Serial(const std::string& name):
 Serial::Serial(Serial&& s): impl_(std::move(s.impl_)) {
     s.impl_ = nullptr;
 }
-
 Serial::~Serial() {}
 
 void Serial::write(const void * data, size_t len) {
@@ -104,21 +101,6 @@ size_t Serial::read(void * data, size_t maxLen) {
 }
 
 std::optional<std::string> Serial::autodetect() {
-    auto udev = udev_new();
-    auto enumerate = udev_enumerate_new(udev);
-    udev_enumerate_add_match_subsystem(enumerate, "tty");
-    udev_enumerate_scan_devices(enumerate);
-    for (
-        auto entry = udev_enumerate_get_list_entry(enumerate);
-        entry != nullptr;
-        entry = udev_list_entry_get_next(entry)
-    ) {
-        auto name = udev_list_entry_get_name(entry);
-        auto dev = udev_device_new_from_syspath(udev, name);
-        auto prop = udev_device_get_property_value(dev, "ID_PATH");
-        if (prop != nullptr) {
-            return std::string(udev_device_get_devnode(dev));
-        }
-    }
+    // TODO: implement autodetect
     return std::nullopt;
 }

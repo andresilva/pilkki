@@ -134,7 +134,7 @@ public:
         }
     };
 
-    Payload read(uint32_t addr, std::optional<uint32_t> len, bool hex) {
+    Payload read(uint32_t addr, std::optional<uint32_t> len, [[maybe_unused]] bool hex) {
         auto info = connect();
 
         uint32_t payloadLen = 0;
@@ -174,7 +174,7 @@ public:
             throw std::runtime_error("Missing \"Done\" record");
         }
         data.resize(realFirmwareLen);
-        Payload res{.data{std::move(data)}, .crc = crcPayload};
+        Payload res{std::move(data), crcPayload};
         if (!res.checkCRC()) {
             throw std::runtime_error("CRC mismatch");
         }
