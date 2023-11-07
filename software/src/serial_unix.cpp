@@ -1,13 +1,10 @@
-
 #include "serial.hpp"
 
 #include <cstring>
-// #include <cstdlib>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <termios.h>
-#include <libudev.h>
 
 #include <iostream>
 #include <string_view>
@@ -55,22 +52,22 @@ Serial::Serial(const std::string& name):
     // cfsetispeed (&tty, (speed_t)B9600);
 
     /* Setting other Port Stuff */
-    tty.c_cflag     &=  ~PARENB;            // Make 8n1
-    tty.c_cflag     &=  ~CSTOPB;
-    tty.c_cflag     &=  ~CSIZE;
-    tty.c_cflag     |=  CS8;
+    tty.c_iflag &= ~(INLCR | ICRNL); //<
+    tty.c_iflag |= IGNPAR | IGNBRK; //<
+    tty.c_oflag &= ~(OPOST | ONLCR | OCRNL); //<
+    tty.c_cflag &= ~(PARENB | PARODD | CSTOPB | CSIZE | CRTSCTS); //< Make 8n1, ... , no flow control
+    tty.c_cflag |= CLOCAL | CREAD | CS8; //< Ignore control lines, turn on READ, ...
+    tty.c_lflag &= ~(ICANON | ISIG | ECHO); //<
 
-    tty.c_cflag     &=  ~CRTSCTS;           // no flow control
-    tty.c_cc[VMIN]   =  1;                  // read doesn't block
+    tty.c_cc[VMIN]   =  0;                  // read does block
     tty.c_cc[VTIME]  =  5;                  // 0.5 seconds read timeout
-    tty.c_cflag     |=  CREAD | CLOCAL;     // turn on READ & ignore ctrl lines
 
     // /* Make raw */
     cfmakeraw(&tty);
 
     // /* Flush Port, then applies attributes */
-    tcflush( fd, TCIFLUSH );
-    if ( tcsetattr ( fd, TCSANOW, &tty ) != 0) {
+    // tcflush( fd, TCIFLUSH );
+    if ( tcsetattr ( fd, TCSAFLUSH, &tty ) != 0) {
         throw std::runtime_error("Failed to tcsetattr: " + std::string(strerror(errno)));
     }
 }
@@ -101,24 +98,4 @@ size_t Serial::read(void * data, size_t maxLen) {
         throw std::runtime_error("Failed to read: " + std::string(strerror(errno)));
     }
     return res;
-}
-
-std::optional<std::string> Serial::autodetect() {
-    auto udev = udev_new();
-    auto enumerate = udev_enumerate_new(udev);
-    udev_enumerate_add_match_subsystem(enumerate, "tty");
-    udev_enumerate_scan_devices(enumerate);
-    for (
-        auto entry = udev_enumerate_get_list_entry(enumerate);
-        entry != nullptr;
-        entry = udev_list_entry_get_next(entry)
-    ) {
-        auto name = udev_list_entry_get_name(entry);
-        auto dev = udev_device_new_from_syspath(udev, name);
-        auto prop = udev_device_get_property_value(dev, "ID_PATH");
-        if (prop != nullptr) {
-            return std::string(udev_device_get_devnode(dev));
-        }
-    }
-    return std::nullopt;
 }
