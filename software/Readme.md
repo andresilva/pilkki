@@ -25,6 +25,16 @@ ninja
 [sudo] ninja install
 ```
 
+### Install in Ubuntu
+```
+sudo apt install ninja-build libudev-dev
+cd ./software
+cmake . -G Ninja
+sudo ninja install
+
+pilkki -v
+> Pilkki (ver. 0.0.1)
+```
 ## Usage
 
 Help message contains comprehensive information about usage:
