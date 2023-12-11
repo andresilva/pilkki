@@ -1,142 +1,110 @@
-# Flasher
-## Utility for flashing
+Pilkki - Flasher Utility
+===============
 
-TODO: description
+Description
+-----------
 
-## Build
+TODO: Add a detailed description of the Flasher utility.
 
-You will need Linux (tested on ArchLinux), CMake, libudev, ninja and c++ compiler.
+Prerequisites
+-------------
 
-Clone this repository with submodules:
+### For Linux
+
+*   CMake
+*   Ninja
+*   C++ Compiler
+*   libudev
+
+#### Installing Dependencies on Ubuntu
+
+Specifically for Ubuntu (probably relevant for most debian distro), install the required packages:
+
+```sh
+sudo apt install ninja-build libudev-dev
+```
+
+### For MacOS
+
+*   CMake
+*   Ninja
+*   GCC Compiler
+
+#### Installing Dependencies on MacOS
+
+Install the necessary tools using [Homebrew](https://brew.sh/):
+
+```sh
+brew install cmake ninja gcc
+```
+
+Building the Code
+-----------------
+
+### Cloning the Repository
+
+Clone the repository with all its submodules:
+
 ```sh
 git clone --recurse-submodules https://github.com/Kalapaja/Pilkki
 ```
 
-Build code:
+### Compiling the Code
+
+Navigate to the cloned directory and compile the code:
+
 ```sh
-mkdir build
-cd build
-cmake .. -G Ninja
+mkdir build 
+cd build 
+cmake .. -G Ninja 
 ninja
 ```
 
-## Install
-```sh
-[sudo] ninja install
-```
+### Installation
 
-### Install in Ubuntu
-```
-sudo apt install ninja-build libudev-dev
-cd ./software
-cmake . -G Ninja
+Install the utility:
+
+```sh
 sudo ninja install
-
-pilkki -v
-> Pilkki (ver. 0.0.1)
 ```
-## Usage
 
-Help message contains comprehensive information about usage:
+### Verifying Installation
+
+To verify the installation, check the installed version:
+
 ```sh
-pilkki --help
-```
-You should get output like this:
-```
-Pilkki - SWD Flasher
-
-All the following arguments require connection to the hardware part of the SWD flasher
-The address and size can be specified in either decimal or hexadecimal format (prefixed with 0x).
-Both values must be multiples of a word (4 bytes).
-
-Usage: pilkki  [options...] [SUBCOMMAND: connect, crc, erase, halt, id, read, reset, run, write, ]
-
-Options:
-     -v,--version : Print version (of this program). [implicit: "true", default: false]
-        -?,--help : print help [implicit: "true", default: false]
-
-
-Subcommand: connect
-Connect to the target and halt it.
-Usage: connect  [options...]
-
-Options:
-        -p,--port : Serial port to interact with flasher. Autodetect if not specified. [default: none]
-
-
-Subcommand: crc
-Calculate CRC32 checksum of memory region on the target.
-Usage: crc  [options...]
-
-Options:
-        -p,--port : Serial port to interact with flasher. Autodetect if not specified. [default: none]
-        -a,--addr : Starting address on the target. [default: 0x08000000]
-      -l,--length : Length of the memory region to read (in bytes). [default: none]
-
-
-Subcommand: erase
-Erase firmware from the target.
-Usage: erase  [options...]
-
-Options:
-        -p,--port : Serial port to interact with flasher. Autodetect if not specified. [default: none]
-        -a,--addr : Starting address on the target. [default: 0x08000000]
-          --pages : Number of pages to erase. [default: none]
-
-
-Subcommand: halt
-Halt the target.
-Usage: halt  [options...]
-
-Options:
-        -p,--port : Serial port to interact with flasher. Autodetect if not specified. [default: none]
-
-
-Subcommand: id
-Get SWD Programmer Hardware ID.
-Usage: id  [options...]
-
-Options:
-        -p,--port : Serial port to interact with flasher. Autodetect if not specified. [default: none]
-
-
-Subcommand: read
-Read firmware from the target.
-Usage: read  [options...]
-
-Options:
-        -p,--port : Serial port to interact with flasher. Autodetect if not specified. [default: none]
-        -a,--addr : Starting address on the target. [default: 0x08000000]
-      -o,--output : Output file name: <filename>.(bin/hex) [default: out.bin]
-      -l,--length : Length of the memory region to read (in bytes). [default: none]
-
-
-Subcommand: reset
-Reset the target (soft/hard).
-Usage: reset  [options...]
-
-Options:
-        -p,--port : Serial port to interact with flasher. Autodetect if not specified. [default: none]
-      --hw,--hard : Hard reset. [implicit: "true", default: false]
-
-
-Subcommand: run
-Run the target.
-Usage: run  [options...]
-
-Options:
-        -p,--port : Serial port to interact with flasher. Autodetect if not specified. [default: none]
-
-
-Subcommand: write
-Write firmware to the target.
-Usage: write  [options...]
-
-Options:
-        -p,--port : Serial port to interact with flasher. Autodetect if not specified. [default: none]
-        -a,--addr : Starting address on the target. [default: 0x08000000]
-       -i,--input : Input file name: <file_name>.(bin/hex) [required]
-      -l,--length : Length of the memory region to write (in bytes). [default: none]
+pilkki -v
 ```
 
-For more information feel free to look at source code.
+The output should show `Pilkki (current version)`.
+
+Usage
+-----
+
+*   Find the port to which your device is connected:
+
+**Linux**    
+```sh
+ls /dev/ttyUSB*
+```
+
+**MacOS**    
+```sh    
+ls /dev/tty.* /dev/cu.*
+```
+
+*   Verify port by connecting to the device:
+    
+```sh
+pilkki connect --port /port/address
+```
+    
+*   Flash a new binary:
+    
+```sh
+pilkki write --port /port/address --input /path/to/your/binary.bin
+```
+    
+### Getting Firmware Binary
+
+Build the binary using code in [kampela-firmware](https://github.com/Kalapaja/kampela-firmware) repo or get compiled binary from the [releases](https://github.com/Kalapaja/kampela-firmware/releases) section
